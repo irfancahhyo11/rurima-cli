@@ -4,13 +4,6 @@ use std::fs::File;
 use std::os::unix::fs::PermissionsExt;
 use std::thread;
 use std::time::Duration;
-
-use std::io::{self, Write, BufRead, BufReader};
-use std::process::{Command, Stdio};
-use std::fs::File;
-use std::os::unix::fs::PermissionsExt;
-use std::thread;
-use std::time::Duration;
 use std::sync::{Arc, Mutex};
 
 fn execute_command_with_log(command: &str, log_file: &str) -> Result<(), Box<dyn std::error::Error>> {
