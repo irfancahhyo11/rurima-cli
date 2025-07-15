@@ -3,7 +3,7 @@ import subprocess
 
 print("installing rurima")
 
-subprocess.run("curl -sL https://get.ruri.zip/rurima | bash > /dev/null")
+subprocess.run("curl -sL https://get.ruri.zip/rurima | bash")
 while True:
 	print("rurima-cli \n select \n 1. Docker \n 2. LXC \n 3. Pull \n 4. Exit \n select number")
 	num = input("> ")
@@ -15,19 +15,11 @@ while True:
 		print("Input docker image name (to save):")
 		docker_path = input("> ")
 		
-		command = f"rurima docker pull -i {docker_name} -t {docker_tag} -s ./{docker_path}"
+		command = f"rurima docker pull -i {docker_name} -t {docker_tag} -s ./{docker_path} > {docker_path}_log.sh"
+
+		os.system(command)
 		
-		with open(f"{docker_path}_log.sh", "w") as f:
-			f.write("#!/bin/bash\n")
-			f.write(f"# Pull command log\n")
-			
-			result = subprocess.run(command, shell=True, capture_output=True, text=True)
-			
-			f.write(f"echo 'Return code: {result.returncode}'\n")
-			if result.stdout:
-				f.write(f"echo 'STDOUT:'\ncat << 'EOF'\n{result.stdout}\nEOF\n")
-			if result.stderr:
-				f.write(f"echo 'STDERR:'\ncat << 'EOF'\n{result.stderr}\nEOF\n")
+		
 
 		print(f"Image pulled. to get start command check {docker_path}_log.sh")
 		
@@ -49,19 +41,9 @@ while True:
 			print("Input LXC image name (to save):")
 			lxc_image_path = input("> ")
 			
-			command = f"rurima lxc pull -i {lxc_image_name} -t {lxc_image_tag} -s ./{lxc_image_path}"
+			command = f"rurima lxc pull -i {lxc_image_name} -t {lxc_image_tag} -s ./{lxc_image_path} > {lxc_image_path}_log.sh"
 			
-			with open(f"{lxc_image_path}_log.sh", "w") as f:
-				f.write("#!/bin/bash\n")
-				f.write(f"# LXC pull command log\n")
-				
-				result = subprocess.run(command, shell=True, capture_output=True, text=True)
-				
-				f.write(f"echo 'Return code: {result.returncode}'\n")
-				if result.stdout:
-					f.write(f"echo 'STDOUT:'\ncat << 'EOF'\n{result.stdout}\nEOF\n")
-				if result.stderr:
-					f.write(f"echo 'STDERR:'\ncat << 'EOF'\n{result.stderr}\nEOF\n")
+			os.system(command)
 			
 			print(f"Image pulled. to get start command check {lxc_image_path}_log.sh")
 			continue
@@ -70,19 +52,9 @@ while True:
 		print("Pull option selected")
 		print("Input what to pull:")
 		pull_target = input("> ")
-		command = f"rurima pull {pull_target}"
+		command = f"rurima pull {pull_target} > {pull_target}_log.sh"
 		
-		with open("pull_log.sh", "w") as f:
-			f.write("#!/bin/bash\n")
-			f.write(f"# Pull command log\n")
-			
-			result = subprocess.run(command, shell=True, capture_output=True, text=True)
-			
-			f.write(f"echo 'Return code: {result.returncode}'\n")
-			if result.stdout:
-				f.write(f"echo 'STDOUT:'\ncat << 'EOF'\n{result.stdout}\nEOF\n")
-			if result.stderr:
-				f.write(f"echo 'STDERR:'\ncat << 'EOF'\n{result.stderr}\nEOF\n")
+		os.system(command)
 		
 		print(f"Command executed. Log saved to pull_log.sh")
 		print(f"Return code: {result.returncode}")
