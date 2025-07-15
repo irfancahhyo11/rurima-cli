@@ -3,7 +3,7 @@ import subprocess
 
 print("installing rurima")
 
-subprocess.run("curl -sL https://get.ruri.zip/rurima | bash")
+os.system("curl -sL https://get.ruri.zip/rurima | bash > /dev/null")
 while True:
 	print("rurima-cli \n select \n 1. Docker \n 2. LXC \n 3. Pull \n 4. Exit \n select number")
 	num = input("> ")
